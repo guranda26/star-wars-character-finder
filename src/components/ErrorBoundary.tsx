@@ -17,14 +17,23 @@ class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("Uncaught error:", error, errorInfo);
+    this.setState({ hasError: true });
   }
+
+  handleResetError = () => {
+    this.setState({ hasError: false });
+  };
+
+  handleThrowError = () => {
+    this.setState({ hasError: true });
+  };
 
   render() {
     if (this.state.hasError) {
       return (
         <div>
-          <h1>Something went wrong.</h1>
-          <button onClick={() => window.location.reload()}>Reload Page</button>
+          <h1>Something went wrong.</h1>{" "}
+          <button onClick={this.handleResetError}>Reload Page</button>
         </div>
       );
     }

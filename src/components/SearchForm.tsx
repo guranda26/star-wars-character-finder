@@ -1,4 +1,5 @@
-import { ChangeEvent, Component, FormEvent } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+// import { useNavigate } from "react-router-dom";
 
 interface Props {
   searchQuery: string;
@@ -7,25 +8,48 @@ interface Props {
   throwError: () => void;
 }
 
-class SearchForm extends Component<Props> {
-  render() {
-    const { searchQuery, onSearchChange, onSearchSubmit, throwError } =
-      this.props;
+const SearchForm: React.FC<Props> = ({
+  searchQuery,
+  onSearchChange,
+  onSearchSubmit,
+}) => {
+  const [hasError, setHasError] = useState(false);
+
+  const handleThrowError = () => {
+    setHasError(true);
+  };
+
+  const resetError = () => {
+    setHasError(false);
+  };
+
+  if (hasError) {
     return (
-      <form onSubmit={onSearchSubmit}>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={onSearchChange}
-          placeholder="Search characters"
-        />
-        <button type="submit">Search</button>
-        <button type="button" onClick={throwError}>
-          Throw Error
-        </button>
-      </form>
+      <div>
+        <h1>Something went wrong.</h1>
+        <button onClick={resetError}>Reload Page</button>
+      </div>
     );
   }
-}
+
+  return (
+    <form data-testid="search-form" onSubmit={onSearchSubmit}>
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={onSearchChange}
+        placeholder="Search characters"
+      />
+      <button type="submit">Search</button>
+      <button
+        type="button"
+        data-testid="throw-error-button"
+        onClick={handleThrowError}
+      >
+        Throw Error
+      </button>
+    </form>
+  );
+};
 
 export default SearchForm;
