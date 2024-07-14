@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
+import { describe, expect, test, vi } from "vitest";
 import StarWarsComponent from "../pages/StarWars";
 import { Character } from "../interfaces/CharacterInterface";
-import { describe, expect, test, vi } from "vitest";
-import { BrowserRouter } from "react-router-dom";
 
 const mockCharacter: Character = {
   name: "Luke Skywalker",
@@ -29,6 +29,8 @@ vi.mock("../utils", () => ({
       data: [mockCharacter],
       totalPages: 1,
     });
+    searchQuery;
+    currentPage;
   }),
 }));
 
