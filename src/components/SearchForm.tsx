@@ -1,5 +1,4 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-// import { useNavigate } from "react-router-dom";
 
 interface Props {
   searchQuery: string;
