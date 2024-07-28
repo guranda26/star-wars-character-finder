@@ -1,4 +1,5 @@
 import { useEffect, useState, ChangeEvent, FormEvent } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import SearchForm from "../components/SearchForm";
 import Pagination from "../components/Pagination";
@@ -6,6 +7,8 @@ import CharacterData from "../components/CharacterData";
 import { fetchData } from "../utils";
 import { Character } from "../interfaces/CharacterInterface";
 import useSearchQuery from "../hooks/useSearchQuery";
+import { setItems } from "../slices/selectedItemsSlice";
+import { RootState } from "../store";
 import "./StarWars.css";
 import ThemeToggleButton from "../components/ThemeToggle";
 import { useTheme } from "../context/useTheme";
@@ -19,6 +22,7 @@ const StarWarsComponent: React.FC = () => {
   const { isDarkMode } = useTheme();
 
   const { page } = useParams<{ page: string }>();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<Character[]>([]);
   const [searchQuery, setSearchQuery] = useSearchQuery();
@@ -31,6 +35,9 @@ const StarWarsComponent: React.FC = () => {
   );
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const navigate = useNavigate();
+  const selectedItems = useSelector(
+    (state: RootState) => state.selectedItems.items,
+  );
 
   useEffect(() => {
     if (page) {
@@ -47,6 +54,11 @@ const StarWarsComponent: React.FC = () => {
     });
     navigate(`/${currentPage}`);
   }, [searchQuery, currentPage, navigate]);
+
+  useEffect(() => {
+    console.log("Selected Items:", selectedItems);
+    dispatch(setItems(selectedItems));
+  }, [dispatch, selectedItems]);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
