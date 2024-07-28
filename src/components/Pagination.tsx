@@ -1,3 +1,5 @@
+import { useTheme } from "../context/useTheme";
+
 interface Props {
   currentPage: number;
   totalPages: number;
@@ -9,10 +11,12 @@ const Pagination: React.FC<Props> = ({
   totalPages,
   onPageChange,
 }) => {
+  const { isDarkMode } = useTheme();
   return (
     <div className="pagination">
       <button
         data-testid="prev-button"
+        className={`${isDarkMode ? "dark-btn" : "light-btn"}`}
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -23,6 +27,7 @@ const Pagination: React.FC<Props> = ({
       </span>
       <button
         data-testid="next-button"
+        className={`${isDarkMode ? "dark-btn" : "light-btn"}`}
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >

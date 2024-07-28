@@ -2,9 +2,32 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  max-width: 50%;
+  margin: 0 auto;
 }
 
-.top-section {
+.light {
+  background-color: #acf7c892;
+}
+
+.dark {
+  background-color: #3b3b3b;
+}
+
+.light-btn {
+  background-color: #ddd;
+  color: #242424;
+}
+
+.dark-btn {
+  background-color: #242424;
+}
+
+.red {
+  background-color: #e31919;
+}
+
+.lig .top-section {
   flex: 1;
   display: flex;
   justify-content: center;
@@ -58,4 +81,12 @@ li {
   width: 100%;
   color: #e31919;
   font-size: 25px;
+}
+
+.dark-input {
+  background-color: #565656;
+}
+
+.light-input {
+  background-color: #ddd;
 }

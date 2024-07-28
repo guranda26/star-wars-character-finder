@@ -7,6 +7,8 @@ import { fetchData } from "../utils";
 import { Character } from "../interfaces/CharacterInterface";
 import useSearchQuery from "../hooks/useSearchQuery";
 import "./StarWars.css";
+import ThemeToggleButton from "../components/ThemeToggle";
+import { useTheme } from "../context/useTheme";
 
 interface FetchDataResponse {
   data: Character[];
@@ -14,6 +16,8 @@ interface FetchDataResponse {
 }
 
 const StarWarsComponent: React.FC = () => {
+  const { isDarkMode } = useTheme();
+
   const { page } = useParams<{ page: string }>();
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<Character[]>([]);
@@ -80,37 +84,40 @@ const StarWarsComponent: React.FC = () => {
   };
 
   return (
-    <div className="container">
-      <div className="top-section">
-        <SearchForm
-          searchQuery={searchQuery}
-          onSearchChange={handleSearchChange}
-          onSearchSubmit={handleSearchSubmit}
-          throwError={throwError}
-        />
-      </div>
-      <div className="bottom-section">
-        <CharacterData
-          data={data}
-          loading={loading}
-          onCharacterClick={handleCharacterClick}
-        />
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </div>
-      {showDetails && selectedCharacter && (
-        <div className="details-section" data-testid="character-details">
-          <h2 data-testid="character-name">{selectedCharacter.name}</h2>
-          <p>Height: {selectedCharacter.height}</p>
-          <p>Mass: {selectedCharacter.mass}</p>
-          <button onClick={closeDetails} data-testid="close-button">
-            Close
-          </button>
+    <div className={`${isDarkMode ? "dark" : "light"}`}>
+      <ThemeToggleButton />
+      <div className={`container`}>
+        <div className="top-section">
+          <SearchForm
+            searchQuery={searchQuery}
+            onSearchChange={handleSearchChange}
+            onSearchSubmit={handleSearchSubmit}
+            throwError={throwError}
+          />
         </div>
-      )}
+        <div className="bottom-section">
+          <CharacterData
+            data={data}
+            loading={loading}
+            onCharacterClick={handleCharacterClick}
+          />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
+        {showDetails && selectedCharacter && (
+          <div className="details-section" data-testid="character-details">
+            <h2 data-testid="character-name">{selectedCharacter.name}</h2>
+            <p>Height: {selectedCharacter.height}</p>
+            <p>Mass: {selectedCharacter.mass}</p>
+            <button onClick={closeDetails} data-testid="close-button">
+              Close
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

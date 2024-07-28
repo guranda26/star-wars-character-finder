@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useTheme } from "../context/useTheme";
 
 interface Props {
   searchQuery: string;
@@ -13,7 +14,7 @@ const SearchForm: React.FC<Props> = ({
   onSearchSubmit,
 }) => {
   const [hasError, setHasError] = useState(false);
-
+  const { isDarkMode } = useTheme();
   const handleThrowError = () => {
     setHasError(true);
   };
@@ -38,12 +39,19 @@ const SearchForm: React.FC<Props> = ({
         value={searchQuery}
         onChange={onSearchChange}
         placeholder="Search characters"
+        className={`${isDarkMode ? "dark-input" : "light-input"}`}
       />
-      <button type="submit">Search</button>
+      <button
+        type="submit"
+        className={`${isDarkMode ? "dark-btn" : "light-btn"}`}
+      >
+        Search
+      </button>
       <button
         type="button"
         data-testid="throw-error-button"
         onClick={handleThrowError}
+        className={`${isDarkMode ? "dark-btn" : "light-btn"}`}
       >
         Throw Error
       </button>
