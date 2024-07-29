@@ -36,8 +36,13 @@
   right: 0;
 }
 
-.details-section h2 {
+.selected-items h2 {
+  color: #000;
   margin: 0 0 10px;
+}
+
+.flyout {
+  color: #000;
 }
 
 .details-section p {

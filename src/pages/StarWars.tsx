@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import SearchForm from "../components/SearchForm";
 import Pagination from "../components/Pagination";
 import CharacterData from "../components/CharacterData";
-import { fetchData } from "../utils";
+// import { fetchData } from "../utils";
 import { Character } from "../interfaces/CharacterInterface";
 import useSearchQuery from "../hooks/useSearchQuery";
 import {
@@ -17,27 +17,34 @@ import "./StarWars.css";
 import ThemeToggleButton from "../components/ThemeToggle";
 import { useTheme } from "../context/useTheme";
 import Flyout from "../components/Flyout";
+import { useGetCharactersQuery } from "../services/apis/charactersApi";
 
-interface FetchDataResponse {
-  data: Character[];
-  totalPages: number;
-}
+// interface FetchDataResponse {
+//   data: Character[];
+//   totalPages: number;
+// }
 
 const StarWarsComponent: React.FC = () => {
   const { isDarkMode } = useTheme();
   const { page } = useParams<{ page: string }>();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<Character[]>([]);
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const [data, setData] = useState<Character[]>([]);
   const [searchQuery, setSearchQuery] = useSearchQuery();
   const [currentPage, setCurrentPage] = useState<number>(
     page ? parseInt(page) : 1,
   );
-  const [totalPages, setTotalPages] = useState<number>(1);
+  // const [totalPages, setTotalPages] = useState<number>(1);
   const navigate = useNavigate();
   const selectedItems = useSelector(
     (state: RootState) => state.selectedItems.items,
   );
+  const { data: charactersData, isLoading } = useGetCharactersQuery({
+    searchQuery,
+    page: currentPage,
+  });
+
+  console.log(charactersData);
 
   useEffect(() => {
     if (page) {
@@ -46,14 +53,14 @@ const StarWarsComponent: React.FC = () => {
   }, [page]);
 
   useEffect(() => {
-    setLoading(true);
-    fetchData(searchQuery, currentPage, (newData: FetchDataResponse) => {
-      setData(newData.data);
-      setTotalPages(newData.totalPages);
-      setLoading(false);
-    });
+    // setLoading(true);
+    // fetchData(searchQuery, currentPage, (newData: FetchDataResponse) => {
+    // setData(newData.data);
+    // setTotalPages(newData.totalPages);
+    // setLoading(false);
+    // });
     navigate(`/${currentPage}`);
-  }, [searchQuery, currentPage, navigate]);
+  }, [currentPage, navigate]);
 
   useEffect(() => {
     console.log("Selected Items:", selectedItems);
@@ -72,10 +79,10 @@ const StarWarsComponent: React.FC = () => {
   const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setCurrentPage(1);
-    fetchData(searchQuery, 1, (newData: FetchDataResponse) => {
-      setData(newData.data);
-      setTotalPages(newData.totalPages);
-    });
+    // fetchData(searchQuery, 1, (newData: FetchDataResponse) => {
+    //   setData(newData.data);
+    //   setTotalPages(newData.totalPages);
+    // });
   };
 
   const handlePageChange = (newPage: number) => {
@@ -106,13 +113,13 @@ const StarWarsComponent: React.FC = () => {
         </div>
         <div className="bottom-section">
           <CharacterData
-            data={data}
-            loading={loading}
+            data={charactersData?.results || []}
+            loading={isLoading}
             onCharacterClick={handleCharacterClick}
           />
           <Pagination
             currentPage={currentPage}
-            totalPages={totalPages}
+            totalPages={Math.ceil((charactersData?.count || 0) / 10) || 1}
             onPageChange={handlePageChange}
           />
         </div>
