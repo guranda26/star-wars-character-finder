@@ -16,6 +16,7 @@ import { RootState } from "../store";
 import "./StarWars.css";
 import ThemeToggleButton from "../components/ThemeToggle";
 import { useTheme } from "../context/useTheme";
+import Flyout from "../components/Flyout";
 
 interface FetchDataResponse {
   data: Character[];
@@ -115,7 +116,7 @@ const StarWarsComponent: React.FC = () => {
             onPageChange={handlePageChange}
           />
         </div>
-        <div className="selected-items-section details-section">
+        {/* <div className="selected-items-section details-section">
           <h2>Selected Items</h2>
           {Object.keys(selectedItems).length === 0 && <p>No items selected.</p>}
           {Object.entries(selectedItems).map(([name, character]) => (
@@ -128,7 +129,9 @@ const StarWarsComponent: React.FC = () => {
               </button>
             </div>
           ))}
-        </div>
+        </div> */}
+        {Object.keys(selectedItems).length > 0 && <Flyout />}{" "}
+        {/* Conditionally render Flyout */}
       </div>
     </div>
   );

@@ -109,6 +109,60 @@ button:hover {
   background-color: #c0392b;
 }
 
+.flyout-container {
+  position: fixed;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+}
+
+.flyout {
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.flyout-item {
+  width: 200px;
+  margin-right: 10px;
+  gap: 10px;
+  padding: 10px 20px;
+  display: flex;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  flex-direction: column;
+}
+
+.flyout-item button {
+  background-color: #f00;
+  color: #fff;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.flyout-item button:hover {
+  background-color: #c00;
+}
+
+.selected-items {
+  text-align: center;
+}
+
+.unselect-all-button {
+  background-color: #f00;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
 @media (max-width: 1100px) {
   .carts {
     grid-template-columns: repeat(3, minmax(200px, 1fr));
