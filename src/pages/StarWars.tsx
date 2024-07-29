@@ -4,7 +4,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import SearchForm from "../components/SearchForm";
 import Pagination from "../components/Pagination";
 import CharacterData from "../components/CharacterData";
-// import { fetchData } from "../utils";
 import { Character } from "../interfaces/CharacterInterface";
 import useSearchQuery from "../hooks/useSearchQuery";
 import {
@@ -28,13 +27,11 @@ const StarWarsComponent: React.FC = () => {
   const { isDarkMode } = useTheme();
   const { page } = useParams<{ page: string }>();
   const dispatch = useDispatch();
-  // const [loading, setLoading] = useState<boolean>(false);
-  // const [data, setData] = useState<Character[]>([]);
+
   const [searchQuery, setSearchQuery] = useSearchQuery();
   const [currentPage, setCurrentPage] = useState<number>(
     page ? parseInt(page) : 1,
   );
-  // const [totalPages, setTotalPages] = useState<number>(1);
   const navigate = useNavigate();
   const selectedItems = useSelector(
     (state: RootState) => state.selectedItems.items,
@@ -53,12 +50,6 @@ const StarWarsComponent: React.FC = () => {
   }, [page]);
 
   useEffect(() => {
-    // setLoading(true);
-    // fetchData(searchQuery, currentPage, (newData: FetchDataResponse) => {
-    // setData(newData.data);
-    // setTotalPages(newData.totalPages);
-    // setLoading(false);
-    // });
     navigate(`/${currentPage}`);
   }, [currentPage, navigate]);
 
@@ -79,10 +70,6 @@ const StarWarsComponent: React.FC = () => {
   const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setCurrentPage(1);
-    // fetchData(searchQuery, 1, (newData: FetchDataResponse) => {
-    //   setData(newData.data);
-    //   setTotalPages(newData.totalPages);
-    // });
   };
 
   const handlePageChange = (newPage: number) => {
