@@ -116,22 +116,7 @@ const StarWarsComponent: React.FC = () => {
             onPageChange={handlePageChange}
           />
         </div>
-        {/* <div className="selected-items-section details-section">
-          <h2>Selected Items</h2>
-          {Object.keys(selectedItems).length === 0 && <p>No items selected.</p>}
-          {Object.entries(selectedItems).map(([name, character]) => (
-            <div key={name}>
-              <h3>{character.name}</h3>
-              <p>Height: {character.height}</p>
-              <p>Mass: {character.mass}</p>
-              <button onClick={() => dispatch(unselectItem(name))}>
-                Remove
-              </button>
-            </div>
-          ))}
-        </div> */}
         {Object.keys(selectedItems).length > 0 && <Flyout />}{" "}
-        {/* Conditionally render Flyout */}
       </div>
     </div>
   );

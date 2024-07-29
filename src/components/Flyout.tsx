@@ -15,12 +15,41 @@ const Flyout: React.FC = () => {
     });
   };
 
+  const handleDownload = () => {
+    const headers = ["Name", "Description", "Details URL"]; // Modify headers as needed
+    const rows = Object.values(selectedItems).map((item) => [
+      item.name,
+      item.height || "",
+      item.mass || "",
+      item.hair_color || "",
+      item.skin_color || "",
+      item.eye_color || "",
+      item.birth_year || "",
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => row.join(",")),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${Object.keys(selectedItems).length}_items.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="flyout-container">
       <div className="selected-items">
         <h2>{Object.keys(selectedItems).length} item(s) selected</h2>
         <button onClick={handleUnselectAll} className="unselect-all-button">
           Unselect all
+        </button>
+        <button onClick={handleDownload} className="download-button">
+          Download
         </button>
       </div>
       <div className="flyout">

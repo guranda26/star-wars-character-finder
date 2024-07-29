@@ -156,6 +156,11 @@ button:hover {
 
 .unselect-all-button {
   background-color: #f00;
+  margin-right: 10px;
+}
+
+.download-button,
+.unselect-all-button {
   color: #fff;
   border: none;
   padding: 5px 10px;
