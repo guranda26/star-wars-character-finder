@@ -11,9 +11,11 @@
 }
 
 .carts {
-  display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  flex-wrap: wrap;
 }
 
 .pagination {
@@ -25,10 +27,13 @@
 
 .details-section {
   margin-top: 20px;
+  margin-left: 20px;
   padding: 15px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  right: 0;
 }
 
 .details-section h2 {
@@ -57,16 +62,17 @@ button:hover {
 
 .cart {
   border: 1px solid #ccc;
-  padding: 16px;
+  padding: 20px 16px;
   margin-top: 20px;
   border-radius: 4px;
   border-radius: 20px;
   background-color: #9fc7f191;
   box-shadow: 10px 3px rgb(179, 173, 173);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  /* transition: 0.3s; */
   cursor: pointer;
   flex-basis: 200px;
+  min-height: 300px;
+  min-width: 200px;
 }
 
 .cart:hover {
@@ -75,6 +81,7 @@ button:hover {
 
 .cart h2 {
   margin: 0 0 10px;
+  font-size: 30px;
 }
 
 .cart ul {
@@ -100,4 +107,25 @@ button:hover {
 
 .cart button:hover {
   background-color: #c0392b;
+}
+
+@media (max-width: 1100px) {
+  .carts {
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .carts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .cart h2 {
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .carts {
+    grid-template-columns: 1fr; /* Stacks the items on very small screens */
+  }
 }

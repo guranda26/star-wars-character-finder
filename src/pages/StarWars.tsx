@@ -7,7 +7,11 @@ import CharacterData from "../components/CharacterData";
 import { fetchData } from "../utils";
 import { Character } from "../interfaces/CharacterInterface";
 import useSearchQuery from "../hooks/useSearchQuery";
-import { setItems } from "../slices/selectedItemsSlice";
+import {
+  setItems,
+  selectItem,
+  unselectItem,
+} from "../slices/selectedItemsSlice";
 import { RootState } from "../store";
 import "./StarWars.css";
 import ThemeToggleButton from "../components/ThemeToggle";
@@ -20,7 +24,6 @@ interface FetchDataResponse {
 
 const StarWarsComponent: React.FC = () => {
   const { isDarkMode } = useTheme();
-
   const { page } = useParams<{ page: string }>();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
@@ -30,10 +33,6 @@ const StarWarsComponent: React.FC = () => {
     page ? parseInt(page) : 1,
   );
   const [totalPages, setTotalPages] = useState<number>(1);
-  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
-    null,
-  );
-  const [showDetails, setShowDetails] = useState<boolean>(false);
   const navigate = useNavigate();
   const selectedItems = useSelector(
     (state: RootState) => state.selectedItems.items,
@@ -84,15 +83,12 @@ const StarWarsComponent: React.FC = () => {
   };
 
   const handleCharacterClick = (character: Character) => {
-    setSelectedCharacter(character);
-    setShowDetails(true);
+    if (selectedItems[character.name]) {
+      dispatch(unselectItem(character.name));
+    } else {
+      dispatch(selectItem(character));
+    }
     navigate(`/${currentPage}?details=1`);
-  };
-
-  const closeDetails = () => {
-    setShowDetails(false);
-    setSelectedCharacter(null);
-    navigate(`/${currentPage}`);
   };
 
   return (
@@ -119,16 +115,20 @@ const StarWarsComponent: React.FC = () => {
             onPageChange={handlePageChange}
           />
         </div>
-        {showDetails && selectedCharacter && (
-          <div className="details-section" data-testid="character-details">
-            <h2 data-testid="character-name">{selectedCharacter.name}</h2>
-            <p>Height: {selectedCharacter.height}</p>
-            <p>Mass: {selectedCharacter.mass}</p>
-            <button onClick={closeDetails} data-testid="close-button">
-              Close
-            </button>
-          </div>
-        )}
+        <div className="selected-items-section details-section">
+          <h2>Selected Items</h2>
+          {Object.keys(selectedItems).length === 0 && <p>No items selected.</p>}
+          {Object.entries(selectedItems).map(([name, character]) => (
+            <div key={name}>
+              <h3>{character.name}</h3>
+              <p>Height: {character.height}</p>
+              <p>Mass: {character.mass}</p>
+              <button onClick={() => dispatch(unselectItem(name))}>
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
