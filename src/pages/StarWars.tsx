@@ -84,7 +84,7 @@ const StarWarsComponent: React.FC = () => {
   return (
     <div className={`${isDarkMode ? "dark" : "light"}`}>
       <ThemeToggleButton />
-      <div className={`container`}>
+      <div className={`container`} data-testid="app-container">
         <div className="top-section">
           <SearchForm
             searchQuery={searchQuery}

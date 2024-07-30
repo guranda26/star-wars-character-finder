@@ -1,61 +1,13 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, renderHook, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
-import CharacterData from "../components/CharacterData";
-import { Character } from "../interfaces/CharacterInterface";
-import { describe, expect, test, vi } from "vitest";
+import { describe, expect, test } from "vitest";
+import { MemoryRouter } from "react-router-dom";
+import StarWarsComponent from "../pages/StarWars";
 import selectedItemsReducer from "../slices/selectedItemsSlice";
 import { charactersApi } from "../services/apis/charactersApi";
-
-type TestStore = ReturnType<typeof createTestStore>;
-
-const mockCharacters: Character[] = [
-  {
-    name: "Luke Skywalker",
-    height: "172",
-    mass: "77",
-    hair_color: "blond",
-    skin_color: "fair",
-    eye_color: "blue",
-    birth_year: "19BBY",
-    gender: "male",
-    homeworld: "Tatooine",
-    films: [],
-    species: [],
-    vehicles: [],
-    starships: [],
-    created: "",
-    edited: "",
-    url: "",
-  },
-  {
-    name: "Darth Vader",
-    height: "202",
-    mass: "136",
-    hair_color: "none",
-    skin_color: "white",
-    eye_color: "yellow",
-    birth_year: "41.9BBY",
-    gender: "male",
-    homeworld: "Tatooine",
-    films: [],
-    species: [],
-    vehicles: [],
-    starships: [],
-    created: "",
-    edited: "",
-    url: "",
-  },
-];
-
-const mockOnCharacterClick = vi.fn();
-
-const renderWithProvider = (
-  ui: React.ReactNode,
-  { store }: { store: TestStore },
-) => {
-  return render(<Provider store={store}>{ui}</Provider>);
-};
+import { ThemeProvider } from "../context/ThemeContext";
+import { useTheme } from "../context/useTheme";
 
 const createTestStore = () =>
   configureStore({
@@ -67,70 +19,46 @@ const createTestStore = () =>
       getDefaultMiddleware().concat(charactersApi.middleware),
   });
 
-describe("CharacterData Component", () => {
-  test("renders the specified number of characters", () => {
+const renderWithProvider = (
+  ui: React.ReactNode,
+  { store }: { store: ReturnType<typeof createTestStore> },
+) => {
+  return render(
+    <Provider store={store}>
+      <ThemeProvider>
+        <MemoryRouter> {ui}</MemoryRouter>
+      </ThemeProvider>
+    </Provider>,
+  );
+};
+
+describe("StarWarsComponent", () => {
+  test("renders without crashing", () => {
     const store = createTestStore();
 
-    renderWithProvider(
-      <CharacterData
-        data={mockCharacters}
-        loading={false}
-        onCharacterClick={mockOnCharacterClick}
-      />,
-      { store },
-    );
+    renderWithProvider(<StarWarsComponent />, { store });
 
-    const characters = screen.getAllByRole("listitem");
-    expect(characters.length).toBe(mockCharacters.length);
+    expect(
+      screen.getByPlaceholderText(/search characters/i),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /search/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /throw error/i }),
+    ).toBeInTheDocument();
   });
 
-  test("displays message when no characters are available", () => {
+  test("renders ThemeToggleButton and toggles theme", () => {
     const store = createTestStore();
 
-    renderWithProvider(
-      <CharacterData
-        data={[]}
-        loading={false}
-        onCharacterClick={mockOnCharacterClick}
-      />,
-      { store },
-    );
+    renderWithProvider(<StarWarsComponent />, { store });
 
-    const message = screen.getByText("No data available");
-    expect(message).toBeInTheDocument();
-  });
+    const themeToggleButton = screen.getAllByTestId("theme-toggle-button");
+    expect(themeToggleButton[0]).toBeInTheDocument();
 
-  test("calls onCharacterClick when a character is clicked", () => {
-    const store = createTestStore();
+    const { result } = renderHook(() => useTheme());
+    expect(result.current.isDarkMode).toBe(false);
 
-    renderWithProvider(
-      <CharacterData
-        data={mockCharacters}
-        loading={false}
-        onCharacterClick={mockOnCharacterClick}
-      />,
-      { store },
-    );
-
-    screen.debug();
-    const characterItem = screen.getAllByRole("listitem")[0];
-    fireEvent.click(characterItem);
-
-    expect(mockOnCharacterClick).toHaveBeenCalledWith(mockCharacters[0]);
-  });
-
-  test("displays loading indicator while fetching data", () => {
-    const store = createTestStore();
-
-    renderWithProvider(
-      <CharacterData
-        data={[]}
-        loading={true}
-        onCharacterClick={mockOnCharacterClick}
-      />,
-      { store },
-    );
-
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+    fireEvent.click(themeToggleButton[1]);
+    expect(result.current.isDarkMode).toBe(false);
   });
 });

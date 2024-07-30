@@ -37,7 +37,7 @@ const CharacterData: React.FC<Props> = ({
   };
 
   return (
-    <ul className="carts">
+    <ul className="carts" data-testid="character-data">
       {data.map((item) => (
         <li
           key={item.name}

@@ -42,7 +42,7 @@ const Flyout: React.FC = () => {
   };
 
   return (
-    <div className="flyout-container">
+    <div className="flyout-container" data-testid="flyout">
       <div className="selected-items">
         <h2>{Object.keys(selectedItems).length} item(s) selected</h2>
         <button
