@@ -50,7 +50,6 @@ const mockCharacters: Character[] = [
 
 const mockOnCharacterClick = vi.fn();
 
-// Create a function to render the component with Redux provider
 const renderWithProvider = (
   ui: React.ReactNode,
   { store }: { store: TestStore },
@@ -58,7 +57,6 @@ const renderWithProvider = (
   return render(<Provider store={store}>{ui}</Provider>);
 };
 
-// Create a test-specific mock store setup
 const createTestStore = () =>
   configureStore({
     reducer: {
