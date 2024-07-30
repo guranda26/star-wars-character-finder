@@ -2,8 +2,18 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import CharacterData from "../components/CharacterData";
 import { Character } from "../interfaces/CharacterInterface";
 import { describe, expect, test, vi } from "vitest";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import selectedItemsReducer from "../slices/selectedItemsSlice";
 
-const mockCharacters: Character[] = [
+// Create a mock store for testing
+const store = configureStore({
+  reducer: {
+    selectedItems: selectedItemsReducer,
+  },
+});
+
+export const mockCharacters: Character[] = [
   {
     name: "Luke Skywalker",
     height: "172",
@@ -47,11 +57,13 @@ const mockOnCharacterClick = vi.fn();
 describe("CharacterData Component", () => {
   test("renders the specified number of characters", () => {
     render(
-      <CharacterData
-        data={mockCharacters}
-        loading={false}
-        onCharacterClick={mockOnCharacterClick}
-      />,
+      <Provider store={store}>
+        <CharacterData
+          data={mockCharacters}
+          loading={false}
+          onCharacterClick={mockOnCharacterClick}
+        />
+      </Provider>,
     );
 
     const characters = screen.getAllByRole("listitem");
@@ -60,11 +72,13 @@ describe("CharacterData Component", () => {
 
   test("displays message when no characters are available", () => {
     render(
-      <CharacterData
-        data={[]}
-        loading={false}
-        onCharacterClick={mockOnCharacterClick}
-      />,
+      <Provider store={store}>
+        <CharacterData
+          data={[]}
+          loading={false}
+          onCharacterClick={mockOnCharacterClick}
+        />
+      </Provider>,
     );
 
     const message = screen.getByText("No data available");
@@ -73,11 +87,13 @@ describe("CharacterData Component", () => {
 
   test("calls onCharacterClick when a character is clicked", () => {
     render(
-      <CharacterData
-        data={mockCharacters}
-        loading={false}
-        onCharacterClick={mockOnCharacterClick}
-      />,
+      <Provider store={store}>
+        <CharacterData
+          data={mockCharacters}
+          loading={false}
+          onCharacterClick={mockOnCharacterClick}
+        />
+      </Provider>,
     );
 
     screen.debug();
@@ -89,11 +105,13 @@ describe("CharacterData Component", () => {
 
   test("displays loading indicator while fetching data", () => {
     render(
-      <CharacterData
-        data={[]}
-        loading={true}
-        onCharacterClick={mockOnCharacterClick}
-      />,
+      <Provider store={store}>
+        <CharacterData
+          data={[]}
+          loading={true}
+          onCharacterClick={mockOnCharacterClick}
+        />
+      </Provider>,
     );
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument();

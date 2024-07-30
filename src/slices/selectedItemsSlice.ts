@@ -20,12 +20,15 @@ const selectedItemsSlice = createSlice({
     unselectItem(state, action: PayloadAction<string>) {
       delete state.items[action.payload];
     },
+    unselectAllItems(state) {
+      state.items = {};
+    },
     setItems(state, action: PayloadAction<{ [key: string]: Character }>) {
       state.items = action.payload;
     },
   },
 });
 
-export const { selectItem, unselectItem, setItems } =
+export const { selectItem, unselectItem, unselectAllItems, setItems } =
   selectedItemsSlice.actions;
 export default selectedItemsSlice.reducer;

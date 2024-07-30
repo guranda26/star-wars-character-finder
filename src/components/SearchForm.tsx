@@ -43,6 +43,7 @@ const SearchForm: React.FC<Props> = ({
       />
       <button
         type="submit"
+        aria-label="Search"
         className={`${isDarkMode ? "dark-btn" : "light-btn"}`}
       >
         Search

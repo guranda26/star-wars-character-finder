@@ -1,6 +1,4 @@
-// import React, { useContext } from "react";
 import { MdOutlineDarkMode, MdDarkMode } from "react-icons/md";
-// import { ThemeContext } from "../context/ThemeContext";
 import { useTheme } from "../context/useTheme";
 
 const ThemeToggleButton = () => {
@@ -10,8 +8,13 @@ const ThemeToggleButton = () => {
     <button
       className={`theme-toggle-button ${isDarkMode ? "dark" : "light"}`}
       onClick={toggleTheme}
+      data-testid="theme-toggle-button"
     >
-      {isDarkMode ? <MdOutlineDarkMode /> : <MdDarkMode />}
+      {isDarkMode ? (
+        <MdOutlineDarkMode data-testid="dark-mode-icon" />
+      ) : (
+        <MdDarkMode data-testid="light-mode-icon" />
+      )}
     </button>
   );
 };

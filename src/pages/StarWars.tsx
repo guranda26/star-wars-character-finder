@@ -18,11 +18,6 @@ import { useTheme } from "../context/useTheme";
 import Flyout from "../components/Flyout";
 import { useGetCharactersQuery } from "../services/apis/charactersApi";
 
-// interface FetchDataResponse {
-//   data: Character[];
-//   totalPages: number;
-// }
-
 const StarWarsComponent: React.FC = () => {
   const { isDarkMode } = useTheme();
   const { page } = useParams<{ page: string }>();

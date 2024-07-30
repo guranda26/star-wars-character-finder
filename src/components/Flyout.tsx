@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { unselectItem } from "../slices/selectedItemsSlice";
+import { unselectItem, unselectAllItems } from "../slices/selectedItemsSlice";
 import { RootState } from "../store";
 
 const Flyout: React.FC = () => {
@@ -10,8 +10,8 @@ const Flyout: React.FC = () => {
   );
 
   const handleUnselectAll = () => {
-    Object.keys(selectedItems).forEach((name) => {
-      dispatch(unselectItem(name));
+    Object.keys(selectedItems).forEach(() => {
+      dispatch(unselectAllItems());
     });
   };
 
@@ -45,10 +45,18 @@ const Flyout: React.FC = () => {
     <div className="flyout-container">
       <div className="selected-items">
         <h2>{Object.keys(selectedItems).length} item(s) selected</h2>
-        <button onClick={handleUnselectAll} className="unselect-all-button">
+        <button
+          onClick={handleUnselectAll}
+          className="unselect-all-button"
+          data-testid="unselect-all-button"
+        >
           Unselect all
         </button>
-        <button onClick={handleDownload} className="download-button">
+        <button
+          onClick={handleDownload}
+          className="download-button"
+          data-testid="download-button"
+        >
           Download
         </button>
       </div>

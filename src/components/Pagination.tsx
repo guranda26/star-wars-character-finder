@@ -13,7 +13,7 @@ const Pagination: React.FC<Props> = ({
 }) => {
   const { isDarkMode } = useTheme();
   return (
-    <div className="pagination">
+    <div className="pagination" data-testid="pagination">
       <button
         data-testid="prev-button"
         className={`${isDarkMode ? "dark-btn" : "light-btn"}`}
