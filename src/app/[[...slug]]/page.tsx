@@ -1,9 +1,9 @@
 import "../../index.css";
 import { ClientOnly } from "./client";
 
-export function generateStaticParams() {
+export const generateStaticParams = () => {
   return [{ slug: [""] }];
-}
+};
 
 export default function Page() {
   return <ClientOnly />;

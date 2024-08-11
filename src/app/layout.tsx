@@ -1,9 +1,3 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Starwars characters",
-};
-
 export default function RootLayout({
   children,
 }: {
