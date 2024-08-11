@@ -7,7 +7,7 @@ import { store } from "../../store";
 
 import dynamic from "next/dynamic";
 
-const App = dynamic(() => import("../../pages/_app"), { ssr: false });
+const App = dynamic(() => import("../app"), { ssr: false });
 
 export function ClientOnly() {
   return (

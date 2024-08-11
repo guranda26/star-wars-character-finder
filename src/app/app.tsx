@@ -1,4 +1,4 @@
-import "../../src/App.css";
+import "../App.css";
 import ErrorBoundary from "../components/ErrorBoundary";
 import StarWarsComponent from "../components/StarWars";
 
