@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../store";
-import App from "../App";
+import App from "../pages/_app";
 import { describe, expect, it } from "vitest";
 
 describe("App", () => {
