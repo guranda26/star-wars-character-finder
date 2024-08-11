@@ -1,9 +1,9 @@
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
-import SearchForm from "../components/SearchForm";
-import Pagination from "../components/Pagination";
-import CharacterData from "../components/CharacterData";
+import SearchForm from "./SearchForm";
+import Pagination from "./Pagination";
+import CharacterData from "./CharacterData";
 import { Character } from "../interfaces/CharacterInterface";
 import useSearchQuery from "../hooks/useSearchQuery";
 import {
@@ -12,22 +12,21 @@ import {
   unselectItem,
 } from "../slices/selectedItemsSlice";
 import { RootState } from "../store";
-import "./StarWars.css";
-import ThemeToggleButton from "../components/ThemeToggle";
+import "../styles/StarWars.css";
+import ThemeToggleButton from "./ThemeToggle";
 import { useTheme } from "../context/useTheme";
-import Flyout from "../components/Flyout";
+import Flyout from "./Flyout";
 import { useGetCharactersQuery } from "../services/apis/charactersApi";
 
 const StarWarsComponent: React.FC = () => {
   const { isDarkMode } = useTheme();
-  const { page } = useParams<{ page: string }>();
+  const searchParams = useSearchParams();
   const dispatch = useDispatch();
 
   const [searchQuery, setSearchQuery] = useSearchQuery();
   const [currentPage, setCurrentPage] = useState<number>(
-    page ? parseInt(page) : 1,
+    parseInt(searchParams.get("page") || "1"),
   );
-  const navigate = useNavigate();
   const selectedItems = useSelector(
     (state: RootState) => state.selectedItems.items,
   );
@@ -39,17 +38,10 @@ const StarWarsComponent: React.FC = () => {
   console.log(charactersData);
 
   useEffect(() => {
-    if (page) {
-      setCurrentPage(parseInt(page));
-    }
-  }, [page]);
+    setCurrentPage(parseInt(searchParams.get("page") || "1"));
+  }, [searchParams]);
 
   useEffect(() => {
-    navigate(`/${currentPage}`);
-  }, [currentPage, navigate]);
-
-  useEffect(() => {
-    console.log("Selected Items:", selectedItems);
     dispatch(setItems(selectedItems));
   }, [dispatch, selectedItems]);
 
@@ -69,7 +61,7 @@ const StarWarsComponent: React.FC = () => {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    navigate(`/${newPage}`);
+    window.history.pushState(null, "", `?page=${newPage}`);
   };
 
   const handleCharacterClick = (character: Character) => {
@@ -78,7 +70,7 @@ const StarWarsComponent: React.FC = () => {
     } else {
       dispatch(selectItem(character));
     }
-    navigate(`/${currentPage}?details=1`);
+    window.history.pushState(null, "", `?page=${currentPage}&details=1`);
   };
 
   return (
