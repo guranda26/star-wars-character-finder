@@ -1,0 +1,1 @@
+import{j as r}from"./index-CnyKaqKf.js";import{j as t}from"./components-DFP-gKeE.js";import"./index-D9_Irmw9.js";function n(){return r.jsxs(r.Fragment,{children:[r.jsx("h1",{children:"Welcome to the Star Wars Character Finder"}),r.jsx(t,{to:"/star-wars",children:"Go to Star Wars Component"})]})}export{n as default};

@@ -26,6 +26,6 @@
     "forceConsistentCasingInFileNames": true,
     "incremental": true
   },
-  "include": ["src", "src/__tests__/**/*.ts", "src/__tests__/**/*.tsx"],
+  "include": ["src", "src/__tests__/**/*.ts", "src/__tests__/**/*.tsx", "app"],
   "exclude": ["./node_modules"]
 }

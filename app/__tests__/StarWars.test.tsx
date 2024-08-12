@@ -5,7 +5,7 @@ import { describe, expect, test } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import StarWarsComponent from "../components/StarWars";
 import selectedItemsReducer from "../slices/selectedItemsSlice";
-import { charactersApi } from "../../app/services/apis/charactersApi";
+import { charactersApi } from "../services/apis/charactersApi";
 import { ThemeProvider } from "../context/ThemeContext";
 import { useTheme } from "../context/useTheme";
 

@@ -1,4 +1,4 @@
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "@remix-run/react";
 import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SearchForm from "./SearchForm";
@@ -16,16 +16,23 @@ import "../styles/StarWars.css";
 import ThemeToggleButton from "./ThemeToggle";
 import { useTheme } from "../context/useTheme";
 import Flyout from "./Flyout";
-import { useGetCharactersQuery } from "../services/apis/charactersApi";
+import { useGetCharactersQuery } from "../apis/charactersApi";
 
 const StarWarsComponent: React.FC = () => {
   const { isDarkMode } = useTheme();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const dispatch = useDispatch();
 
   const [searchQuery, setSearchQuery] = useSearchQuery();
+  // const [searchParams, setSearchParams] = useSearchParams() as [
+  //   URLSearchParams,
+  //   (params: URLSearchParams | Record<string, string>) => void,
+  // ];
+
   const [currentPage, setCurrentPage] = useState<number>(
-    parseInt(searchParams.get("page") || "1"),
+    parseInt((searchParams as URLSearchParams).get("page") || "1"),
   );
   const selectedItems = useSelector(
     (state: RootState) => state.selectedItems.items,
@@ -34,8 +41,6 @@ const StarWarsComponent: React.FC = () => {
     searchQuery,
     page: currentPage,
   });
-
-  console.log(charactersData);
 
   useEffect(() => {
     setCurrentPage(parseInt(searchParams.get("page") || "1"));
@@ -57,11 +62,13 @@ const StarWarsComponent: React.FC = () => {
   const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setCurrentPage(1);
+
+    setSearchParams({ page: "1", query: searchQuery });
   };
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    window.history.pushState(null, "", `?page=${newPage}`);
+    setSearchParams({ page: `${newPage}`, query: searchQuery });
   };
 
   const handleCharacterClick = (character: Character) => {
@@ -70,7 +77,7 @@ const StarWarsComponent: React.FC = () => {
     } else {
       dispatch(selectItem(character));
     }
-    window.history.pushState(null, "", `?page=${currentPage}&details=1`);
+    setSearchParams({ page: `${currentPage}`, details: "1" });
   };
 
   return (

@@ -6,7 +6,7 @@ import CharacterData from "../components/CharacterData";
 import { Character } from "../interfaces/CharacterInterface";
 import { describe, expect, test, vi } from "vitest";
 import selectedItemsReducer from "../slices/selectedItemsSlice";
-import { charactersApi } from "../../app/services/apis/charactersApi";
+import { charactersApi } from "../services/apis/charactersApi";
 
 type TestStore = ReturnType<typeof createTestStore>;
 

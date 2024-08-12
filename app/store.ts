@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import selectedItemsReducer from "./slices/selectedItemsSlice";
-import { charactersApi } from "./services/apis/charactersApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
+import { charactersApi } from "./apis/charactersApi";
 
 export const store = configureStore({
   reducer: {
